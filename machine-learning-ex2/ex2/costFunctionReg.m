@@ -19,13 +19,14 @@ grad = zeros(size(theta));
 
 
 h = sigmoid(X*theta);
-J = (- y' * log(h) - ( 1 - y') * log( 1- h)) /m + (lambda * (sum(theta.^2 )-theta(1)^2 ) / (2 * m));
 
-e = eye(size(theta));
-e(1,1) = 0;
+theta2 = theta;
+theta2(1) = 0;
 
-grad = X' * (h - y) /m + lambda * (theta) / m;
-grad(1) = grad(1) -  (lambda * theta(1) / m);
+J = (- y' * log(h) - (1 - y') * log(1 - h)) / m   + lambda * sum(theta2.^2) / (2*m);
+
+
+grad = X' * (h - y) /m + lambda * theta2 / m;
 
 
 
