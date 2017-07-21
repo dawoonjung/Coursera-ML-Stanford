@@ -36,10 +36,13 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+%size(X) % size(X) : 5 4
+%size(theta) % size(theta) : 4 1
+
+%h = sigmoid(theta' .* X);  %  size : 5,4 -> wrong
 
 h = sigmoid(  X * theta);
-%h = sigmoid(theta' .* X);  %  size : 5,4 -> X
-
+%size(h) % size(h)  : 5 1
 
 theta2 = theta;
 theta2(1) = 0;
