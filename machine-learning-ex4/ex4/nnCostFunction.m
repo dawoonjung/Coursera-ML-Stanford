@@ -43,10 +43,12 @@ X = [ones(m, 1), X];
 
 %size(Theta1) % 25   401
 %size(Theta2) % 10   26
-
-a1 = sigmoid(X * Theta1');
+z1 = X * Theta1';
+a1 = sigmoid(z1);
 a1 = [ones(size(a1, 1), 1), a1];
-h = sigmoid(a1 * Theta2');
+
+z2 = a1 * Theta2';
+h = sigmoid(z2);
 %size(h) % 5000     10
 %size(y) % 5000      1
 
@@ -101,10 +103,27 @@ J = J + lambda * ( sum(sum(Theta1_ .^2)) + sum(sum(Theta2_ .^ 2)) )/ (2*m);
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+THETA = 0;
+
+E3 = h - Y;
+%size(E3) % 5000     10
+%size(sigmoidGradient(z1)) %  5000     25
 
 
+%E2 =  E3 * Theta2_ .* [ones(size(z1, 1), 1),sigmoidGradient(z1)];
+%size(E2) % 5000     26
+
+E2 =  (E3 * Theta2)(:, 2:end) .* sigmoidGradient(z1);
+%size(E2) % 5000     25
+
+%DELTA = sum(sum(E3)) + sum(sum(E2));
 
 
+Theta1_grad = E2'*X/m + lambda * [zeros(size(Theta1,1), 1) , Theta1(:, 2:end)] /m;
+Theta2_grad = E3'*a1/m + lambda * [zeros(size(Theta2,1), 1) ,Theta2(:, 2:end)] /m;
+ 
+%size(Theta1_grad(:)) %650 1
+%size(Theta2_grad(:)) %100 1
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -132,6 +151,6 @@ J = J + lambda * ( sum(sum(Theta1_ .^2)) + sum(sum(Theta2_ .^ 2)) )/ (2*m);
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
+\
 
 end
